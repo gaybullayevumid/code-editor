@@ -1,9 +1,17 @@
+import os
 import sys
 from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
+    QDockWidget,
+    QTreeView,
+    QTextEdit,
+    QWidget,
+    QLabel,
+    QHBoxLayout,
 )
-from PyQt6.QtGui import QAction
+from PyQt6.QtGui import QFileSystemModel, QAction
+from PyQt6.QtCore import Qt, QModelIndex
 
 
 class MainWindow(QMainWindow):
@@ -106,6 +114,31 @@ class MainWindow(QMainWindow):
         help_menu = menu_bar.addMenu("Help")
         about = QAction("About", self)
         help_menu.addAction(about)
+
+        self.editor = QTextEdit()
+        self.setCentralWidget(self.editor)
+
+        self.dock = QDockWidget("File Explorer", self)
+        self.dock.setAllowedAreas(
+            Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea
+        )
+
+        title_bar = QWidget()
+        title_layout = QHBoxLayout()
+        title_layout.setContentsMargins(5, 0, 0, 0)
+        title_label = QLabel("File Explorer")
+        title_layout.addWidget(title_label)
+        title_bar.setLayout(title_layout)
+        self.dock.setTitleBarWidget(title_bar)
+
+        self.tree = QTreeView()
+        self.tree.setHeaderHidden(True)
+
+        self.tree.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.tree.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+        self.dock.setWidget(self.tree)
+        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock)
 
 
 app = QApplication(sys.argv)
