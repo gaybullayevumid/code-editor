@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import (
     QWidget,
     QLabel,
     QHBoxLayout,
+    QMenuBar
 )
 from PyQt6.QtGui import QFileSystemModel, QAction
 from PyQt6.QtCore import Qt, QModelIndex
@@ -21,14 +22,15 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("PyIDLE")
         self.setGeometry(100, 100, 900, 600)
 
-        menu_bar = self.menuBar()
+        menu_bar = QMenuBar()
+        self.setMenuWidget(menu_bar)
 
         menu_bar.setStyleSheet(
             """
                 QMenuBar {
                     background-color: #181818;
                     color: #878787;
-                    font-size: 14px;
+                    font-size: 12px;
                     border: 1px solid #2D2D2D;
                     padding: 1px;
                     border-radius: 8px;
@@ -52,7 +54,7 @@ class MainWindow(QMainWindow):
                 QMenu {
                     background-color: #1E1E1E;
                     color: #B4B4B4;
-                    font-size: 13px;
+                    font-size: 12px;
                     border-radius: 8px;
                     border: 1px solid #404040;
                     margin: 0px;
@@ -75,7 +77,7 @@ class MainWindow(QMainWindow):
                 QMenu::separator {
                     height: 1px;
                     background: #404040;
-                    margin: 0px;
+                    margin: 4px 0px;
                 }
             """
         )
@@ -87,6 +89,7 @@ class MainWindow(QMainWindow):
         open_folder = QAction("Open Folder", self)
         save = QAction("Save", self)
         save_as = QAction("Save As", self)
+        settings = QAction("Settings", self)
         exit = QAction("Exit", self)
         file_menu.addAction(new_file)
         file_menu.addSeparator()
@@ -95,6 +98,8 @@ class MainWindow(QMainWindow):
         file_menu.addSeparator()
         file_menu.addAction(save)
         file_menu.addAction(save_as)
+        file_menu.addSeparator()
+        file_menu.addAction(settings)
         file_menu.addSeparator()
         file_menu.addAction(exit)
 
@@ -120,6 +125,20 @@ class MainWindow(QMainWindow):
 
 
         self.editor = QTextEdit()
+        editor = self.editor
+        editor.setStyleSheet(
+            """
+                QTextEdit {
+                    background-color: #181818;
+                    color: #878787;
+                    font-size: 12px;
+                    border: 1px solid #2D2D2D;
+                    padding: 1px;
+                    border-radius: 8px;
+                }
+            """
+        )
+
         self.setCentralWidget(self.editor)
 
         self.dock = QDockWidget("File Explorer", self)
